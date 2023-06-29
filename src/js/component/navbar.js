@@ -1,58 +1,50 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
+import { Context } from "../store/appContext";
 
-const Navbar = () => {
-  return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <Link className="navbar-brand" to="/">
-        Logo
-      </Link>
+export const Navbar = () => {
+	const { store, actions } = useContext(Context);
 
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-
-      <div className="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Favorites
-            </a>
-            <div
-              className="dropdown-menu dropdown-menu-right"
-              aria-labelledby="navbarDropdownMenuLink"
-            >
-              {/* Add your favorite items here */}
-              <a className="dropdown-item" href="#">
-                Item 1
-              </a>
-              <a className="dropdown-item" href="#">
-                Item 2
-              </a>
-              <a className="dropdown-item" href="#">
-                Item 3
-              </a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
+	return (
+		<Container fluid>
+			<Row>
+				<Col>
+					<nav className="navbar navbar-light bg-light mb-3">
+						<Link to="/">
+							<span className="navbar-brand m-2 h1">
+								<img
+									src="https://raw.githubusercontent.com/NicolasArayaB/starwars-blog-reading-list/master/dist/img/starwarslogo.png"
+									width="90"
+								/>
+							</span>
+						</Link>
+						<div className="ml-auto">
+							<Dropdown>
+								<Dropdown.Toggle variant="primary" className="toggle">
+									<div className="drp">
+										Favorites <div className="drp counter">{store.favorites.length}</div>
+									</div>
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									{store.favorites ? (
+										store.favorites.map((elem, i) => (
+											<Dropdown.Item key={i} id={++i} title={elem.item}>
+												{elem.item}
+												<div id={i} onClick={() => actions.removeItem(i)}>
+													&#128465;
+												</div>
+											</Dropdown.Item>
+										))
+									) : (
+										<span>(empty)</span>
+									)}
+								</Dropdown.Menu>
+							</Dropdown>
+						</div>
+					</nav>
+				</Col>
+			</Row>
+		</Container>
+	);
 };
-
-export default Navbar;
