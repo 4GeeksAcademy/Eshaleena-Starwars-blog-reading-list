@@ -1,9 +1,11 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
 import { Single } from "./views/single";
+import { SinglePlanet } from "./views/singlePlanet";
+import { SingleStarship } from "./views/singleStarship";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -16,15 +18,27 @@ const Layout = () => {
 	const basename = process.env.BASENAME || "";
 
 	return (
-		<div>
+		<div className="d-flex flex-column">
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
 					<Navbar />
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/single/:theid" element={<Single />} />
-						<Route path="*" element={<h1>Not found!</h1>} />
-					</Routes>
+					<Switch>
+						<Route exact path="/">
+							<Home />
+						</Route>
+						<Route exact path="/single/:uid">
+							<Single />
+						</Route>
+						<Route exact path="/single_planet/:uid">
+							<SinglePlanet />
+						</Route>
+						<Route exact path="/single_starship/:uid">
+							<SingleStarship />
+						</Route>
+						<Route>
+							<h1>Not found!</h1>
+						</Route>
+					</Switch>
 					<Footer />
 				</ScrollToTop>
 			</BrowserRouter>

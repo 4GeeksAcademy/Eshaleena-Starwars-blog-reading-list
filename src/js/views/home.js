@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import CharCard from "../component/charCard";
-import PlanetCard from "../component/planetCard";
-import ShipCard from "../component/shipCard";
-import { Context } from "../store/appContext";
+import CharCard from "../component/charCard.js";
+import PlanetCard from "../component/planetCard.js";
+import ShipCard from "../component/shipCard.js";
+import { Context } from "../store/appContext.js";
 import "../../styles/home.scss";
 
 export const Home = () => {
