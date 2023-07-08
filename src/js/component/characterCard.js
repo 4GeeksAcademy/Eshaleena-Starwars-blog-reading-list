@@ -1,28 +1,29 @@
-import React, { useContext } from "react";
-import "../../../styles/cards.css";
-import { Context } from "../../store/appContext";
+import React from "react";
 import { Link } from "react-router-dom";
+import "../../../styles/cards.css";
+import { useContext } from "react";
+import { Context } from "../../store/appContext";
 
-const PlanetsCard = (props) => {
+const CharacterCard = (props) => {
   const { store, actions } = useContext(Context);
 
   return (
-    <div className="card bg bg-secondary" style={{ width: "18rem" }}>
+    <div className="card bg bg-secondary cardNumber1">
       <img
-        src={`https://starwars-visualguide.com/assets/img/planets/${
+        src={`https://starwars-visualguide.com/assets/img/characters/${
           props.id + 1
         }.jpg`}
         className="card-img-top"
         alt="..."
-        style={{ borderRadius: "5px" }}
+        style={{ width: "300px", height: "auto", borderRadius: "5px" }}
       />
       <div className="card-body">
-        <h5 className="card-title">Name: {props.planet.name}</h5>
-        <p className="card-text">Population: {props.planet.population}</p>
-        <p className="card-text">Terrain: {props.planet.terrain}</p>
-        <p className="card-text">Climate: {props.planet.climate}</p>
+        <h5 className="card-title">Name: {props.item.name}</h5>
+        <p className="card-text">Height: {props.item.height}</p>
+        <p className="card-text">Mass: {props.item.mass}</p>
+        <p className="card-text">Gender: {props.item.gender}</p>
         <div className="buttonContainer">
-          <Link to={"/planets/" + props.id}>
+          <Link to={"/people/" + props.id}>
             <button href="#" className="btn btn-danger">
               Learn More
             </button>
@@ -30,10 +31,10 @@ const PlanetsCard = (props) => {
           <button
             className="favoritesCards"
             onClick={() => {
-              if (store.favorites.includes(props.planet.name)) {
+              if (store.favorites.includes(props.item.name)) {
                 alert("Element already on the list");
               } else {
-                actions.addFavorites(props.planet.name);
+                actions.addFavorites(props.item.name);
               }
             }}>
             <div style={{ marginLeft: "10px" }}>
@@ -46,4 +47,4 @@ const PlanetsCard = (props) => {
   );
 };
 
-export default PlanetsCard;
+export default CharacterCard;

@@ -1,116 +1,84 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
-			people: [], // all characters info
-			character: [], // 1 character info
-			planets: [], // all planets info
-			planet: [], // 1 planet info
-			starShips: [], // all star ship info
-			starShip: [], // 1 star ship info
-			favorites: []
+	  store: {
+		demo: [
+		  {
+			title: "FIRST",
+			background: "white",
+			initial: "white",
+		  },
+		  {
+			title: "SECOND",
+			background: "white",
+			initial: "white",
+		  },
+		],
+		people: [],
+		planets: [],
+		vehicles: [],
+		favorites: [],
+	  },
+	  actions: {
+		// Use getActions to call a function within a fuction
+		exampleFunction: () => {
+		  getActions().changeColor(0, "green");
 		},
-		actions: {
-			// Use getActions to call a function within a function
 
-			addItem: item => {
-				const store = getStore();
-				setStore({ favorites: [...store.favorites, { item }] });
-			},
+		addFavorites: (name) => {
+		  const store = getStore();
+		  setStore({ favorites: [...store.favorites, name] });
+		},
 
-			removeItem: id => {
-				let value = document.getElementById(id).title;
-				const store = getStore();
-				setStore({ favorites: store.favorites.filter(fav => fav.item !== value) });
-			},
+		deleteItem: (i) => {
+		  const store = getStore();
+		  let newFavorites = store.favorites.filter((item, index) => {
+			return i != index;
+		  });
+		  setStore({ favorites: newFavorites });
+		},
 
-			getPeopleData: async () => {
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
+		loadSomeData: () => {
+		  fetch("https://swapi.dev/api/people/")
+			.then((res) => res.json())
+			.then((data) => {
+			  console.log(data);
+			  setStore({ people: data.results });
+			})
+			.catch((err) => console.error(err));
 
-				const request = await fetch(`https://www.swapi.tech/api/people`, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ people: data.results });
-			},
+		  fetch("https://swapi.dev/api/planets/")
+			.then((res) => res.json())
+			.then((data) => {
+			  console.log(data);
+			  setStore({ planets: data.results });
+			})
+			.catch((err) => console.error(err));
 
-			getCharacterDescription: async url => {
-				const store = getStore();
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
+		  fetch("https://swapi.dev/api/vehicles/")
+			.then((res) => res.json())
+			.then((data) => {
+			  console.log(data);
+			  setStore({ vehicles: data.results });
+			})
+			.catch((err) => console.error(err));
+		},
 
-				const request = await fetch(url, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ character: [...store.character, data.result.properties] });
-			},
+		changeColor: (index, color) => {
+		  //get the store
+		  const store = getStore();
 
-			charDescription: url => {
-				getActions().getCharacterDescription(url);
-			},
+		  //we have to loop the entire demo array to look for the respective index
+		  //and change its color
+		  const demo = store.demo.map((elm, i) => {
+			if (i === index) elm.background = color;
+			return elm;
+		  });
 
-			getPlanetsData: async () => {
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
-
-				const request = await fetch(`https://www.swapi.tech/api/planets`, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ planets: data.results });
-			},
-
-			getPlanetDescription: async url => {
-				const store = getStore();
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
-
-				const request = await fetch(url, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ planet: [...store.planet, data.result.properties] });
-			},
-
-			planetDescription: url => {
-				getActions().getPlanetDescription(url);
-			},
-
-			getStarShipsData: async () => {
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
-
-				const request = await fetch(`https://www.swapi.tech/api/starships`, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ starShips: data.results });
-			},
-
-			getStarShipDescription: async url => {
-				const store = getStore();
-				const settings = {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				};
-
-				const request = await fetch(url, settings);
-				const json = await request.json();
-				const data = json;
-				setStore({ starShip: [...store.starShip, data.result.properties] });
-			},
-
-			starShipDescription: url => {
-				getActions().getStarShipDescription(url);
-			}
-		}
+		  //reset the global store
+		  setStore({ demo: demo });
+		},
+	  },
 	};
-};
+  };
 
-export default getState;
+  export default getState;
